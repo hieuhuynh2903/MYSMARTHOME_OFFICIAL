@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "868024929266",
+    "firebase_url": "https://thesis-720fc-default-rtdb.firebaseio.com",
+    "project_id": "thesis-720fc",
+    "storage_bucket": "thesis-720fc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:868024929266:android:bbf68599f197a309b9396b",
+        "android_client_info": {
+          "package_name": "com.example.mysmarthome"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "868024929266-u8brkp94uvg9libkeucs0lkmc3073p8g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfNvT-jNF56-mzoGSxIj5KBwfCcxS-FYA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "868024929266-u8brkp94uvg9libkeucs0lkmc3073p8g.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "868024929266-8iru9a07444oq8h4r06d5ujmn15svn61.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.codelesslabs.pp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
