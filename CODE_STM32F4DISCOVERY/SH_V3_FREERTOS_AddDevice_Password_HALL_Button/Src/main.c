@@ -73,6 +73,9 @@
 #define LIVINGROOM_GARAGELIGHT_PORT		GPIOA
 #define LIVINGROOM_GARAGELIGHT_PIN 		GPIO_PIN_4
 
+#define BELL_PORT GPIOB
+#define BELL_PIN 	GPIO_PIN_15
+
 #define DRYINGPOLE_PIN		4
 #define GATE_PIN					3
 
@@ -181,21 +184,21 @@ UART_HandleTypeDef huart6;
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
-  .priority = (osPriority_t) osPriorityNormal,
+  .priority = (osPriority_t) osPriorityLow,
   .stack_size = 256 * 4
 };
 /* Definitions for myTask02 */
 osThreadId_t myTask02Handle;
 const osThreadAttr_t myTask02_attributes = {
   .name = "myTask02",
-  .priority = (osPriority_t) osPriorityLow2,
+  .priority = (osPriority_t) osPriorityLow1,
   .stack_size = 128 * 4
 };
 /* Definitions for myTask03 */
 osThreadId_t myTask03Handle;
 const osThreadAttr_t myTask03_attributes = {
   .name = "myTask03",
-  .priority = (osPriority_t) osPriorityLow1,
+  .priority = (osPriority_t) osPriorityLow,
   .stack_size = 128 * 4
 };
 /* Definitions for myTask04 */
@@ -688,6 +691,7 @@ void verify_password(){
 		i = 0;
 		password_key = NULL;
 	}
+	
 	if(password_key != 'A' && password_key != 'B'){
 		if(password_key){
 			password_input[i] = password_key;
@@ -695,6 +699,7 @@ void verify_password(){
 			i++;
 		}
 	}
+
 	if(i == 8){
 		if(strncmp(password_input, password_setup, 8) == 0){
 			LCD_Clear();
@@ -815,10 +820,12 @@ void change_password(){
 void automation_home(){
 	bool pir_state = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_7);
 	bool rain_state = !HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1);
+	
+
 	//PIR Sensor 
 	if(pir_state == true){
 		control_light("Livingroom",ON);
-		HAL_Delay(500);
+
 		serial_send_cmd("Homescreen smartlight ON");
 		HAL_Delay(500);
 	}
@@ -828,13 +835,14 @@ void automation_home(){
 		servo_position(DRYINGPOLE_PIN, 0);
 		
 		serial_send_cmd("Homescreen dryingpole OFF");
-		HAL_Delay(500);
+		HAL_Delay(10);
 	}
 	
 	//GAS and FLAME Sensor 
 	if ( (read_gas_ppm() > GAS_THRESH) || (!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_3)) ){
 		
 		music_play(850);
+		HAL_Delay(500);
 		control_window("Kitchen", ON);	
 		control_fan("Kitchen",ON);
 		servo_position(GATE_PIN,OPEN);
@@ -858,11 +866,15 @@ void automation_home(){
 			HAL_Delay(500);
 		}
 	}else {
-		music_stop();
-		serial_send_cmd("Homescreen bell OFF");
-		HAL_Delay(1000);
+		if(HAL_GPIO_ReadPin(BELL_PORT,BELL_PIN)){
+			HAL_Delay(500);
+			if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_15)){
+				music_stop();
+				serial_send_cmd("Homescreen bell OFF");
+				HAL_Delay(50);
+			}
+		}		
 	}
-	
 }
 
 void receive_password_from_firebase(){
@@ -1548,6 +1560,7 @@ void StartDefaultTask(void *argument)
   {
 		control_home();
 		HAL_IWDG_Refresh(&hiwdg);
+
     osDelay(1);
   }
   /* USER CODE END 5 */ 
@@ -1580,7 +1593,7 @@ void StartTask02Function(void *argument)
 			snprintf(data_GAS_char,sizeof(data_GAS_char),"GAS %4.2f",gas_in_ppm);
 			serial_send_cmd(data_GAS_char);	
 			HAL_Delay(100);
-			if(gas_in_ppm >= 10){
+			if(gas_in_ppm >= GAS_THRESH){
 				music_play(500);
 				HAL_Delay(200);
 				music_play(650);
@@ -1610,7 +1623,16 @@ void StartTask03Function(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+		receive_password_from_firebase();
+		
+		verify_password();
+		function_key = read_keypad();
+		HAL_Delay(10);
+		if(function_key == 'B'){
+			change_password();
+		}
+
+    osDelay(30);
   }
   /* USER CODE END StartTask03Function */
 }
@@ -1653,7 +1675,7 @@ void StartTask04Function(void *argument)
 			
 			timeout_to_send_flamevalue = HAL_GetTick();
 		}
-
+		
     osDelay(1);
   }
   /* USER CODE END StartTask04Function */
@@ -1672,15 +1694,7 @@ void StartTask05Function(void *argument)
   /* Infinite loop */
   for(;;)
   {
-		receive_password_from_firebase();
-		
-		verify_password();
-		function_key = read_keypad();
-		HAL_Delay(5);
-		if(function_key == 'B'){
-			change_password();
-		}
-    osDelay(15);
+    osDelay(1);
   }
   /* USER CODE END StartTask05Function */
 }

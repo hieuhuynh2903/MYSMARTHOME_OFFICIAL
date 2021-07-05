@@ -1,0 +1,13 @@
+Output: NC Drill Files
+Type  : NC Drill
+From  : Project [SMARTHOME.PrjPCB]
+   Generated File[Sheet1-RoundHoles.TXT]
+   Generated File[Sheet1-SlotHoles.TXT]
+   Generated File[Sheet1.LDP]
+   Generated File[Sheet1.DRR]
+
+
+Files Generated   : 4
+Documents Printed : 0
+
+Finished Output Generation At 12:01:20 AM On 5/11/2021

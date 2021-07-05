@@ -1,7 +1,7 @@
 [PreviousGenFiles]
-HeaderPath=C:/Users/hieu2/OneDrive/Desktop/SMARTHOME_TEST/SH_V3_FREERTOS_AddDevice_Password_HALL/Inc
+HeaderPath=D:/MYYSMARTHOME_OFFICIAL/MYSMARTHOME_OFFICIAL/CODE_STM32F4DISCOVERY/SH_V3_FREERTOS_AddDevice_Password_HALL_Button/Inc
 HeaderFiles=stm32f4xx_it.h;stm32f4xx_hal_conf.h;main.h;FreeRTOSConfig.h;
-SourcePath=C:/Users/hieu2/OneDrive/Desktop/SMARTHOME_TEST/SH_V3_FREERTOS_AddDevice_Password_HALL/Src
+SourcePath=D:/MYYSMARTHOME_OFFICIAL/MYSMARTHOME_OFFICIAL/CODE_STM32F4DISCOVERY/SH_V3_FREERTOS_AddDevice_Password_HALL_Button/Src
 SourceFiles=stm32f4xx_it.c;stm32f4xx_hal_msp.c;main.c;freertos.c;stm32f4xx_hal_timebase_tim.c;
 
 [PreviousLibFiles]
