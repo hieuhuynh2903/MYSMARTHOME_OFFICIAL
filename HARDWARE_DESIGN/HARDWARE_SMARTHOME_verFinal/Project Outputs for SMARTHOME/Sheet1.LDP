@@ -1,0 +1,3 @@
+Layer Pairs Export File for PCB: C:\Users\hieu2\OneDrive\Desktop\Backup_SH_project\HARDWARE_SMARTHOME_verFinal\Sheet1.PcbDoc
+LayersSetName=Top_Bot_Thru_Holes|DrillFile=sheet1-roundholes.txt|DrillLayers=gtl,gbl
+LayersSetName=Top_Bot_Slot_Holes|DrillFile=sheet1-slotholes.txt|DrillLayers=gtl,gbl

@@ -834,13 +834,13 @@ ARM Macro Assembler    Page 13
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
 erwork --depend=sh_v1\startup_stm32f407xx.d -osh_v1\startup_stm32f407xx.o -I..\
-Inc -IC:\Users\hieu2\OneDrive\Desktop\SMARTHOME_TEST\SH_V3_FREERTOS_AddDevice_P
-assword_HALL_Button\MDK-ARM\RTE -IC:\Users\hieu2\AppData\Local\Arm\Packs\ARM\CM
-SIS\5.7.0\CMSIS\Core\Include -IC:\Users\hieu2\AppData\Local\Arm\Packs\Keil\STM3
-2F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include --predefine="__MICRO
-LIB SETA 1" --predefine="__UVISION_VERSION SETA 517" --predefine="_RTE_ SETA 1"
- --predefine="STM32F407xx SETA 1" --list=startup_stm32f407xx.lst startup_stm32f
-407xx.s
+Inc -ID:\MYYSMARTHOME_OFFICIAL\MYSMARTHOME_OFFICIAL\CODE_STM32F4DISCOVERY\SH_V3
+_FREERTOS_AddDevice_Password_HALL_Button\MDK-ARM\RTE -IC:\Users\hieu2\AppData\L
+ocal\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include -IC:\Users\hieu2\AppData\Loca
+l\Arm\Packs\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
+ --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 517" --pre
+define="_RTE_ SETA 1" --predefine="STM32F407xx SETA 1" --list=startup_stm32f407
+xx.lst startup_stm32f407xx.s
 
 
 
