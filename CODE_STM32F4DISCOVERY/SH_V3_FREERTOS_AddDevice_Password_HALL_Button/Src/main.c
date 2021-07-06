@@ -185,14 +185,14 @@ UART_HandleTypeDef huart6;
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
-  .priority = (osPriority_t) osPriorityLow,
+  .priority = (osPriority_t) osPriorityLow1,
   .stack_size = 256 * 4
 };
 /* Definitions for myTask02 */
 osThreadId_t myTask02Handle;
 const osThreadAttr_t myTask02_attributes = {
   .name = "myTask02",
-  .priority = (osPriority_t) osPriorityLow1,
+  .priority = (osPriority_t) osPriorityLow2,
   .stack_size = 128 * 4
 };
 /* Definitions for myTask03 */
@@ -1778,7 +1778,7 @@ void StartTask04Function(void *argument)
 			timeout_to_send_flamevalue = HAL_GetTick();
 		}
 		
-    osDelay(1);
+    osDelay(20);
   }
   /* USER CODE END StartTask04Function */
 }
@@ -1829,7 +1829,7 @@ void StartTask06Function(void *argument)
 			timeout_to_send_hallvalue = HAL_GetTick();
 		}	
 		
-    osDelay(15);
+    osDelay(30);
   }
   /* USER CODE END StartTask06Function */
 }
