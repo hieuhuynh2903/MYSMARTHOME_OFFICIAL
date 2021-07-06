@@ -136,8 +136,9 @@ unsigned char data_dht11[4];
 char data_dht11_char[15];
 
 char debug_char[10];
+
+
 char function_key;
-char password_key;
 char password_setup[8] = "12345678";
 char password_input[8];
 char password_new[8];
@@ -145,7 +146,6 @@ char password_new_confirm[8];
 char password_update_firebase[18];
 char password_receive[8];
 void change_password();
-
 int i = 0;
 
 uint32_t current_value_main = 0;
@@ -157,6 +157,7 @@ long timeout_to_send_flamevalue = 0;
 long timeout_to_send_rainvalue 	= 0;
 long timeout_to_send_pirvalue 	= 0;
 long timeout_to_send_hallvalue 	= 0;
+long timeout_to_read_keypad 		= 0;
 
 /* USER CODE END PD */
 
@@ -199,7 +200,7 @@ osThreadId_t myTask03Handle;
 const osThreadAttr_t myTask03_attributes = {
   .name = "myTask03",
   .priority = (osPriority_t) osPriorityLow,
-  .stack_size = 128 * 4
+  .stack_size = 256 * 4
 };
 /* Definitions for myTask04 */
 osThreadId_t myTask04Handle;
@@ -552,6 +553,15 @@ char* read_flame_char(){
   return flame_char; //IT'S CAN RETURN GLOBAL VARIABLE ONLY
 }
 char read_keypad (void){
+	 /*Configure GPIO pin : PA15 */
+	HAL_GPIO_WritePin(GPIOA,GPIO_PIN_15,GPIO_PIN_SET);	
+
+  /*Configure GPIO pin : PC11 */
+	HAL_GPIO_WritePin(GPIOC,GPIO_PIN_11,GPIO_PIN_SET);	
+
+  /*Configure GPIO pins : PD0 PD2 */
+	HAL_GPIO_WritePin(GPIOD,GPIO_PIN_0,GPIO_PIN_SET);	
+	HAL_GPIO_WritePin(GPIOD,GPIO_PIN_2,GPIO_PIN_SET);	
 
 	/* Make ROW 1 LOW and all other ROWs HIGH */
 	HAL_GPIO_WritePin (R1_PORT, R1_PIN, GPIO_PIN_RESET);  //Pull the R1 low
@@ -561,7 +571,7 @@ char read_keypad (void){
 	
 	if (!(HAL_GPIO_ReadPin (C1_PORT, C1_PIN)))   // if the Col 1 is low
 	{
-		HAL_Delay(20);
+		HAL_Delay(5);
 		if (!(HAL_GPIO_ReadPin (C1_PORT, C1_PIN))){
 			while (!(HAL_GPIO_ReadPin (C1_PORT, C1_PIN)));   // wait till the button is pressed
 			return '1';		
@@ -570,18 +580,21 @@ char read_keypad (void){
 	
 	if (!(HAL_GPIO_ReadPin (C2_PORT, C2_PIN)))   // if the Col 2 is low
 	{
+		HAL_Delay(5);
 		while (!(HAL_GPIO_ReadPin (C2_PORT, C2_PIN)));   // wait till the button is pressed
 		return '2';
 	}
 	
 	if (!(HAL_GPIO_ReadPin (C3_PORT, C3_PIN)))   // if the Col 3 is low
 	{
+		HAL_Delay(5);
 		while (!(HAL_GPIO_ReadPin (C3_PORT, C3_PIN)));   // wait till the button is pressed
 		return '3';
 	}
 	
 	if (!(HAL_GPIO_ReadPin (C4_PORT, C4_PIN)))   // if the Col 4 is low
 	{
+		HAL_Delay(5);
 		while (!(HAL_GPIO_ReadPin (C4_PORT, C4_PIN)));   // wait till the button is pressed
 		return 'A';
 	}
@@ -594,24 +607,28 @@ char read_keypad (void){
 	
 	if (!(HAL_GPIO_ReadPin (C1_PORT, C1_PIN)))   // if the Col 1 is low
 	{
+		HAL_Delay(5);
 		while (!(HAL_GPIO_ReadPin (C1_PORT, C1_PIN)));   // wait till the button is pressed
 		return '4';
 	}
 	
 	if (!(HAL_GPIO_ReadPin (C2_PORT, C2_PIN)))   // if the Col 2 is low
 	{
+		HAL_Delay(5);
 		while (!(HAL_GPIO_ReadPin (C2_PORT, C2_PIN)));   // wait till the button is pressed
 		return '5';
 	}
 	
 	if (!(HAL_GPIO_ReadPin (C3_PORT, C3_PIN)))   // if the Col 3 is low
 	{
+		HAL_Delay(5);
 		while (!(HAL_GPIO_ReadPin (C3_PORT, C3_PIN)));   // wait till the button is pressed
 		return '6';
 	}
 	
 	if (!(HAL_GPIO_ReadPin (C4_PORT, C4_PIN)))   // if the Col 4 is low
 	{
+		HAL_Delay(5);
 		while (!(HAL_GPIO_ReadPin (C4_PORT, C4_PIN)));   // wait till the button is pressed
 		return 'B';
 	}
@@ -625,24 +642,28 @@ char read_keypad (void){
 	
 	if (!(HAL_GPIO_ReadPin (C1_PORT, C1_PIN)))   // if the Col 1 is low
 	{
+		HAL_Delay(5);
 		while (!(HAL_GPIO_ReadPin (C1_PORT, C1_PIN)));   // wait till the button is pressed
 		return '7';
 	}
 	
 	if (!(HAL_GPIO_ReadPin (C2_PORT, C2_PIN)))   // if the Col 2 is low
 	{
+		HAL_Delay(5);
 		while (!(HAL_GPIO_ReadPin (C2_PORT, C2_PIN)));   // wait till the button is pressed
 		return '8';
 	}
 	
 	if (!(HAL_GPIO_ReadPin (C3_PORT, C3_PIN)))   // if the Col 3 is low
 	{
+		HAL_Delay(5);
 		while (!(HAL_GPIO_ReadPin (C3_PORT, C3_PIN)));   // wait till the button is pressed
 		return '9';
 	}
 	
 	if (!(HAL_GPIO_ReadPin (C4_PORT, C4_PIN)))   // if the Col 4 is low
 	{
+		HAL_Delay(5);
 		while (!(HAL_GPIO_ReadPin (C4_PORT, C4_PIN)));   // wait till the button is pressed
 		return 'C';
 	}
@@ -656,24 +677,28 @@ char read_keypad (void){
 	
 	if (!(HAL_GPIO_ReadPin (C1_PORT, C1_PIN)))   // if the Col 1 is low
 	{
+		HAL_Delay(5);
 		while (!(HAL_GPIO_ReadPin (C1_PORT, C1_PIN)));   // wait till the button is pressed
 		return '*';
 	}
 	
 	if (!(HAL_GPIO_ReadPin (C2_PORT, C2_PIN)))   // if the Col 2 is low
 	{
+		HAL_Delay(5);
 		while (!(HAL_GPIO_ReadPin (C2_PORT, C2_PIN)));   // wait till the button is pressed
 		return '0';
 	}
 	
 	if (!(HAL_GPIO_ReadPin (C3_PORT, C3_PIN)))   // if the Col 3 is low
 	{
+		HAL_Delay(5);
 		while (!(HAL_GPIO_ReadPin (C3_PORT, C3_PIN)));   // wait till the button is pressed
 		return '#';
 	}
 	
 	if (!(HAL_GPIO_ReadPin (C4_PORT, C4_PIN)))   // if the Col 4 is low
 	{
+		HAL_Delay(5);
 		while (!(HAL_GPIO_ReadPin (C4_PORT, C4_PIN)));   // wait till the button is pressed
 		return 'D';
 	}
@@ -681,9 +706,29 @@ char read_keypad (void){
 }
 
 void verify_password(){
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
+  /*Configure GPIO pin : PA15 */
+  GPIO_InitStruct.Pin = GPIO_PIN_15;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PC11 */
+  GPIO_InitStruct.Pin = GPIO_PIN_11;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PD0 PD2 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_2;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+	
+	char password_key;
 	password_key = read_keypad();
-	HAL_Delay(10);
-	if(password_key == 'A'){
+	HAL_Delay(5);
+	if(password_key == 'D'){
 		LCD_Clear();
 		LCD_SetCursor(2,1);
 		LCD_Send_String("   ENTER PASSWORD   ",STR_NOSLIDE);
@@ -692,7 +737,7 @@ void verify_password(){
 		password_key = NULL;
 	}
 	
-	if(password_key != 'A' && password_key != 'B'){
+	if(password_key != 'D' && password_key != 'B' && password_key != 'A' && password_key != 'C'  ){
 		if(password_key){
 			password_input[i] = password_key;
 			LCD_Send_String("*",STR_NOSLIDE);
@@ -711,7 +756,7 @@ void verify_password(){
 			LCD_Clear();
 			LCD_SetCursor(2,1);
 			LCD_Send_String("   Good day Hieu!   ",STR_NOSLIDE);
-			HAL_Delay(2000);
+			HAL_Delay(1000);
 			LCD_SetCursor(3,6);
 			i = 0;
 		}
@@ -721,7 +766,7 @@ void verify_password(){
 			LCD_Send_String("ACCESS DENIED!",STR_NOSLIDE);
 			servo_position(GATE_PIN,CLOSE);
 			serial_send_cmd("Homescreen gate OFF");
-			HAL_Delay(2000);
+			HAL_Delay(1000);
 			LCD_Clear();
 			LCD_SetCursor(2,1);
 			LCD_Send_String("   ENTER PASSWORD   ",STR_NOSLIDE);
@@ -732,15 +777,35 @@ void verify_password(){
 }
 
 void change_password(){
+	
 	int j = 0;
 	LCD_Clear();
 	LCD_SetCursor(2,1);
 	LCD_Send_String(" ENTER OLD PASSWORD ",STR_NOSLIDE);
 	LCD_SetCursor(3,6);
+	
 	while( j < 8){
+		
+		GPIO_InitTypeDef GPIO_InitStruct = {0};
+		/*Configure GPIO pin : PA15 */
+		GPIO_InitStruct.Pin = GPIO_PIN_15;
+		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+		GPIO_InitStruct.Pull = GPIO_PULLUP;
+		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+		/*Configure GPIO pin : PC11 */
+		GPIO_InitStruct.Pin = GPIO_PIN_11;
+		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+		GPIO_InitStruct.Pull = GPIO_PULLUP;
+		HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+		/*Configure GPIO pins : PD0 PD2 */
+		GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_2;
+		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+		GPIO_InitStruct.Pull = GPIO_PULLUP;
+		HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+		
 		char passwordkey_change =  read_keypad();
 		HAL_Delay(10);
-		if (passwordkey_change){
+		if (passwordkey_change && passwordkey_change != 'B' && passwordkey_change != 'A' && passwordkey_change != 'D' && passwordkey_change != 'C'){
 			password_input[j] = passwordkey_change;
 			LCD_Send_String("*",STR_NOSLIDE);
 			j++;
@@ -754,9 +819,27 @@ void change_password(){
 		LCD_Send_String(" ENTER NEW PASSWORD ",STR_NOSLIDE);
 		LCD_SetCursor(3,6);
 		while (j < 8){
+			
+			GPIO_InitTypeDef GPIO_InitStruct = {0};
+			/*Configure GPIO pin : PA15 */
+			GPIO_InitStruct.Pin = GPIO_PIN_15;
+			GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+			GPIO_InitStruct.Pull = GPIO_PULLUP;
+			HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+			/*Configure GPIO pin : PC11 */
+			GPIO_InitStruct.Pin = GPIO_PIN_11;
+			GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+			GPIO_InitStruct.Pull = GPIO_PULLUP;
+			HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+			/*Configure GPIO pins : PD0 PD2 */
+			GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_2;
+			GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+			GPIO_InitStruct.Pull = GPIO_PULLUP;
+			HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+			
 			char passwordkey_change =  read_keypad();
 			HAL_Delay(10);
-			if(passwordkey_change){
+			if(passwordkey_change && passwordkey_change != 'B' && passwordkey_change != 'A' && passwordkey_change != 'D' && passwordkey_change != 'C'){
 				password_new[j] = passwordkey_change;
 				LCD_Send_String("*",STR_NOSLIDE);
 				j++;
@@ -768,9 +851,27 @@ void change_password(){
 		LCD_Send_String("CONFIRM NEW PASSWORD",STR_NOSLIDE);
 		LCD_SetCursor(3,6);
 		while (j < 8){
+			
+			GPIO_InitTypeDef GPIO_InitStruct = {0};
+			/*Configure GPIO pin : PA15 */
+			GPIO_InitStruct.Pin = GPIO_PIN_15;
+			GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+			GPIO_InitStruct.Pull = GPIO_PULLUP;
+			HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+			/*Configure GPIO pin : PC11 */
+			GPIO_InitStruct.Pin = GPIO_PIN_11;
+			GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+			GPIO_InitStruct.Pull = GPIO_PULLUP;
+			HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+			/*Configure GPIO pins : PD0 PD2 */
+			GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_2;
+			GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+			GPIO_InitStruct.Pull = GPIO_PULLUP;
+			HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+			
 			char passwordkey_change =  read_keypad();
 			HAL_Delay(10);
-			if(passwordkey_change){
+			if(passwordkey_change && passwordkey_change != 'B' && passwordkey_change != 'A' && passwordkey_change != 'D' && passwordkey_change != 'C'){
 				password_new_confirm[j] = passwordkey_change;
 				LCD_Send_String("*",STR_NOSLIDE);
 				j++;
@@ -1001,7 +1102,6 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -1605,7 +1705,7 @@ void StartTask02Function(void *argument)
 			timeout_to_send_gasvalue = HAL_GetTick();
 		}
 		
-    osDelay(1);
+    osDelay(50);
   }
   /* USER CODE END StartTask02Function */
 }
@@ -1620,19 +1720,21 @@ void StartTask02Function(void *argument)
 void StartTask03Function(void *argument)
 {
   /* USER CODE BEGIN StartTask03Function */
+
   /* Infinite loop */
   for(;;)
   {
 		receive_password_from_firebase();
-		
+
 		verify_password();
+		
 		function_key = read_keypad();
-		HAL_Delay(10);
+		HAL_Delay(25);
 		if(function_key == 'B'){
 			change_password();
-		}
-
-    osDelay(30);
+		}			
+		
+    osDelay(10);
   }
   /* USER CODE END StartTask03Function */
 }
@@ -1726,6 +1828,7 @@ void StartTask06Function(void *argument)
 			
 			timeout_to_send_hallvalue = HAL_GetTick();
 		}	
+		
     osDelay(15);
   }
   /* USER CODE END StartTask06Function */
